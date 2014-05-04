@@ -1,0 +1,743 @@
+                                                                  --- DBMS project---
+                             ----name: Anudeeep vattikuti , ssid:20053275 , dt: 5/3/2014---
+
+---Tables---
+
+-- people
+
+CREATE TABLE people
+(
+  id integer NOT NULL,
+  fullname character varying(255) NOT NULL,
+  email character varying(255),
+  gender character varying(1) NOT NULL,
+  birth_date date NOT NULL,
+  phone character varying(25) NOT NULL,
+  CONSTRAINT pk_people_id PRIMARY KEY (id)
+);
+
+
+--customer
+
+CREATE TABLE customer
+(
+  id integer NOT NULL,
+  people_id integer NOT NULL,
+  credit_car_details bigint,
+  CONSTRAINT pk_customer_id PRIMARY KEY (id),
+  CONSTRAINT fk_people_id FOREIGN KEY (people_id)
+      REFERENCES people (id) 
+);
+
+
+--bill
+
+CREATE TABLE bill
+(
+  id integer NOT NULL,
+  customer_id integer NOT NULL,
+  total numeric NOT NULL DEFAULT 0,
+  date timestamp without time zone NOT NULL,
+  total_seats integer NOT NULL,
+  CONSTRAINT pk_bill_id PRIMARY KEY (id),
+  CONSTRAINT fk_customer_id FOREIGN KEY (customer_id)
+      REFERENCES customer (id) 
+);
+
+
+
+
+--cinema_model
+
+CREATE TABLE cinema_model
+(
+  id integer NOT NULL,
+  description character varying(50) NOT NULL,
+  price_per_seat numeric,
+  CONSTRAINT pk_cinema_model_id PRIMARY KEY (id)
+);
+
+
+--cinema
+
+CREATE TABLE cinema
+(
+  id integer NOT NULL,
+  cinema_model_id integer NOT NULL,
+  name character varying(45) NOT NULL,
+  seat_capacity integer NOT NULL,
+  phone character varying(25) NOT NULL,
+  CONSTRAINT pk_cinema_id PRIMARY KEY (id),
+  CONSTRAINT fk_cinema_model_id FOREIGN KEY (cinema_model_id)
+      REFERENCES cinema_model (id) 
+);
+
+
+--movie_rating
+
+CREATE TABLE movie_rating
+(
+  id integer NOT NULL,
+  rate_character "char" NOT NULL,
+  description character varying(255) NOT NULL,
+  CONSTRAINT pk_movie_rating_id PRIMARY KEY (id)
+);
+
+
+
+--state
+
+CREATE TABLE state
+(
+  id integer NOT NULL,
+  description character varying(45) NOT NULL,
+  CONSTRAINT pk_state_id PRIMARY KEY (id)
+);
+
+
+
+--movie
+
+CREATE TABLE movie
+(
+  id integer NOT NULL,
+  movie_rating_id integer NOT NULL,
+  name character varying(255) NOT NULL,
+  duration time without time zone NOT NULL,
+  state_id integer NOT NULL,
+  CONSTRAINT pk_movie_id PRIMARY KEY (id),
+  CONSTRAINT fk_movie_rating_id FOREIGN KEY (movie_rating_id)
+      REFERENCES movie_rating (id) ,
+  CONSTRAINT fk_state_id FOREIGN KEY (state_id)
+      REFERENCES state (id) 
+);
+
+
+--performance
+
+CREATE TABLE performance
+(
+  id integer NOT NULL,
+  movie_id integer NOT NULL,
+  start_time time without time zone NOT NULL,
+  end_time time without time zone NOT NULL,
+  CONSTRAINT pk_performance_id PRIMARY KEY (id),
+  CONSTRAINT fk_movie_id2 FOREIGN KEY (movie_id)
+      REFERENCES movie (id) 
+);
+
+
+--seat
+
+CREATE TABLE seat
+(
+  id integer NOT NULL,
+  cinema_id integer NOT NULL,
+  handicap_seat boolean NOT NULL,
+  state_id integer NOT NULL,
+  CONSTRAINT pk_seat PRIMARY KEY (id),
+  CONSTRAINT fk_cinema_id2 FOREIGN KEY (cinema_id)
+      REFERENCES cinema (id) ,
+  CONSTRAINT fk_state_id FOREIGN KEY (state_id)
+      REFERENCES state (id) 
+);
+
+
+--customer_seat
+
+CREATE TABLE customer_seat
+(
+  id integer NOT NULL,
+  seat_id integer NOT NULL,
+  bill_id integer NOT NULL,
+  performance_id integer NOT NULL,
+  CONSTRAINT pk_customer_seat_id PRIMARY KEY (id),
+  CONSTRAINT fk_performance_id FOREIGN KEY (performance_id)
+      REFERENCES performance (id) ,
+  CONSTRAINT fk_seat_id FOREIGN KEY (seat_id)
+      REFERENCES seat (id) 
+);
+
+
+--cinema_movie
+
+CREATE TABLE cinema_movie
+(
+  id integer NOT NULL,
+  movie_id integer NOT NULL,
+  cinema_id integer NOT NULL,
+  from_date date NOT NULL,
+  to_date date NOT NULL,
+  CONSTRAINT pk_cinema_movie_id PRIMARY KEY (id),
+  CONSTRAINT fk_cinema_id1 FOREIGN KEY (cinema_id)
+      REFERENCES cinema (id) ,
+  CONSTRAINT fk_movies_id1 FOREIGN KEY (movie_id)
+      REFERENCES movie (id) 
+);
+
+
+
+---people insertions---
+
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (1,'Weng Long Mock','wenglockmo@gmail.com','m','1990-04-20','1421443252');
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (2,'Alec Edward Wood','alecew@gmail.com','m','1987-02-03','5467547646');
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (3,'Stephen Bochner','stboch@gmail.com','m','1978-05-05','723648723');
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (4,'Oitmaa Jaan','oitma@gmail.com','f','1991-07-15','653564276');
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (5,'Campbell Angus','angcamp@gmail.com','m','1992-12-12','12371745');
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (6,'Sharples Jason','ssjason@gmail.com','m','1985-01-01','12312846');
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (7,'Rose Margaret','rosemag@gmail.com','f','1990-01-02','234525235');
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (8,'Lonergan Ann','loann@gmail.com','f','1967-04-09','21249082');
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (9,'Arms Strong Susan','armsusan@gmail.com','f','1978-09-10','2321286343');
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (10,'Richard Szczepanski','richarddgfg@gmail.com','m','1993-10-06','34285628725');
+
+INSERT INTO people(
+            id, fullname, email, gender, birth_date, phone)
+    VALUES (11,'Alice Yau','alyau@gmail.com','f','1954-08-07','3532637343');
+
+
+
+---customer insertions---
+
+
+INSERT INTO customer(
+            id, people_id, credit_car_details)
+    VALUES (1, 2, 444444444444444 );
+
+INSERT INTO customer(
+            id, people_id, credit_car_details)
+    VALUES (2, 3, null);
+
+INSERT INTO customer(
+            id, people_id, credit_car_details)
+    VALUES (3, 5, 234567892345678);
+
+INSERT INTO customer(
+            id, people_id, credit_car_details)
+    VALUES (4, 10, 111111111111111);
+
+INSERT INTO customer(
+            id, people_id, credit_car_details)
+    VALUES (5, 2, null);
+
+INSERT INTO customer(
+            id, people_id, credit_car_details)
+    VALUES (6, 1, null);
+
+INSERT INTO customer(
+            id, people_id, credit_car_details)
+    VALUES (7, 7, 555555555555555);
+
+INSERT INTO customer(
+            id, people_id, credit_car_details)
+    VALUES (8, 5, 234567892345678);
+
+
+
+------bill insertions---
+
+INSERT INTO bill(
+            id, customer_id, total, date, total_seats)
+    VALUES (5, 5, 1277.5, '2014-04-04 00:00:00', 5);
+
+INSERT INTO bill(
+            id, customer_id, total, date, total_seats)
+    VALUES (1, 1, 600,'2014-04-04 00:00:00', 4);
+
+INSERT INTO bill(
+            id, customer_id, total, date, total_seats)
+    VALUES (2, 2, 270, '2014-04-04 00:00:00', 3);
+
+INSERT INTO bill(
+            id, customer_id, total, date, total_seats)
+    VALUES (3, 3, 450, '2014-04-04 00:00:00', 2);
+
+INSERT INTO bill(
+            id, customer_id, total, date, total_seats)
+    VALUES (4, 4, 300, '2014-03-03 00:00:00', 2);
+
+INSERT INTO bill(
+            id, customer_id, total, date, total_seats)
+    VALUES (6,6 ,110, '2014-04-04 00:00:00' , 2);
+
+INSERT INTO bill(
+            id, customer_id, total, date, total_seats)
+    VALUES (7, 7, 450, '2014-04-04 00:00:00', 3);
+
+INSERT INTO bill(
+            id, customer_id, total, date, total_seats)
+    VALUES (8, 8, 270, '2014-04-04 00:00:00', 3);
+
+
+
+---cinema_model insertions---
+
+INSERT INTO cinema_model(
+            id, description, price_per_seat)
+    VALUES (1, 'Normal Cinema', 90);
+
+INSERT INTO cinema_model(
+            id, description, price_per_seat)
+    VALUES (2, '3D Cinema', 150);
+
+INSERT INTO cinema_model(
+            id, description, price_per_seat)
+    VALUES (3,'Normal/3D Cinema', 150);
+
+INSERT INTO cinema_model(
+            id, description, price_per_seat)
+    VALUES (4, 'Imax', 225);
+
+INSERT INTO cinema_model(
+            id, description, price_per_seat)
+    VALUES (5, 'Imax 3D', 255.5);
+
+INSERT INTO cinema_model(
+            id, description, price_per_seat)
+    VALUES (6, 'Large Cinema', 55);
+
+
+
+---cinema insertions---
+
+INSERT INTO cinema(
+            id, cinema_model_id, name, seat_capacity, phone)
+    VALUES (3, 4, 'Ruby', 98, 28356928365);
+
+INSERT INTO cinema(
+            id, cinema_model_id, name, seat_capacity, phone)
+    VALUES (2, 1, 'Saphire', 155, 12325262362);
+
+INSERT INTO cinema(
+            id, cinema_model_id, name, seat_capacity, phone)
+    VALUES (1, 2, 'Diamond', 125, 13252323623);
+
+INSERT INTO cinema(
+            id, cinema_model_id, name, seat_capacity, phone)
+    VALUES (4, 2, 'Silver', 110, 12412515325);
+
+INSERT INTO cinema(
+            id, cinema_model_id, name, seat_capacity, phone)
+    VALUES (5, 5, 'Gold', 85, 12415421535);
+
+INSERT INTO cinema(
+            id, cinema_model_id, name, seat_capacity, phone)
+    VALUES (6, 6, 'Zen', 250, 23526234632);
+
+INSERT INTO cinema(
+            id, cinema_model_id, name, seat_capacity, phone)
+    VALUES (7, 3, 'Plutonium', 125, 12323563642);
+
+INSERT INTO cinema(
+            id, cinema_model_id, name, seat_capacity, phone)
+    VALUES (8, 1, 'Iron', 125, 12423534635);
+
+INSERT INTO cinema(
+            id, cinema_model_id, name, seat_capacity, phone)
+    VALUES (9, 1, 'Bronze', 126, 12445453536);
+
+INSERT INTO cinema(
+            id, cinema_model_id, name, seat_capacity, phone)
+    VALUES (10, 1, 'Nova', 120, 13243265788);
+
+
+
+---movie_rating insertions----
+
+
+INSERT INTO movie_rating(
+            id, rate_character, description)
+    VALUES (1,'A',' For everyone');
+
+INSERT INTO movie_rating(
+            id, rate_character, description)
+    VALUES (2, 'B', 'For everyone,child');
+
+INSERT INTO movie_rating(
+            id, rate_character, description)
+    VALUES (3,' C',' Only +17');
+
+INSERT INTO movie_rating(
+            id, rate_character, description)
+    VALUES (4, 'D', 'Only +21');
+
+
+
+---state insertions---
+
+INSERT INTO state(
+            id, description)
+    VALUES (1, 'Aviable');
+
+INSERT INTO state(
+            id, description)
+    VALUES (2,'Not aviable');
+
+INSERT INTO state(
+            id, description)
+    VALUES (3,'Deleted/Out of Ord' );
+
+
+----movie insertions---
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (2, 2, 'Avatar', '03:00:00', 1);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (3, 1,'Avatar: The last airbender' , '01:45:00', 1);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (4, 3, 'Paranormal activity 3',' 02:12:00', 1);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (5, 4,' Saw 3', '02:00:00', 2);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (6, 1,' Alvin the chipmunks', '01:35:00', 2);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (7, 1, 'Naruto not hokage yet', '01:55:00', 1);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (8, 3, 'paranormal activity 2', '01:55:00', 1);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (9, 1, 'Pokemon: Ash is 41 years old','02:35:00',2);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (10, 3, 'Chuky 2','02:13:00',2);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (11, 2, 'X-men -1','02:34:00',1);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (13, 2, 'Transformers Age of extiction','03:00:00',1);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (14, 1, 'Dora the Exploder','01:23:00',2);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (15, 2, 'Hulk 15','02:31:00',1);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (16, 2, 'Captian America 2','01:56:00',1);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (17, 3, 'Scarie movie one hundred','02:34:00',2);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (12, 4, 'Hardcore movie 2','03:00:00',2);
+
+INSERT INTO movie(
+            id, movie_rating_id, name, duration, state_id)
+    VALUES (1, 2, 'Forest Gump','02:45:00',1);
+    
+
+
+
+---performance---
+
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (1, 1, '11:45:00',' 14:30:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (2, 1, '15:00:00','17:45:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (3, 2, '11:30:00','14:30:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (4, 2, '15:00:00','18:00:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (8, 3, '14:00:00','15:45:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (6, 4, '15:00:00','17:12:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (5, 4, '12:00:00','14:12:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (7, 3, '12:00:00','13:45:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (9, 7, '12:00:00','13:55:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (10, 7, '14:00:00','15:55:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (11, 8, '12:00:00','13:55:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (12, 8, '14:00:00','15:55:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (13, 11, '15:00:00','17:34:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (14, 11, '18:00:00','20:34:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (15, 13, '13:00:00','16:00:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (16, 13, '16:30:00','19:30:00');
+
+INSERT INTO performance(
+            id, movie_id, start_time, end_time)
+    VALUES (17, 15, '12:00:00','14:31:00');
+
+
+
+
+
+---seat insertions---
+
+
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (5, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (1, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (2, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (3, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (4, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (6, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (7, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (8, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (9, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (10, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (11, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (12, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (13, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (14, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (15, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (16, 1, 'f', 1);
+
+INSERT INTO seat(
+            id, cinema_id, handicap_seat, state_id)
+    VALUES (17, 1, 'f', 1);
+
+
+
+----customer_seat insertions---
+
+
+INSERT INTO customer_seat(
+            id, seat_id, bill_id, performance_id)
+    VALUES (1, 15, 1, 5);
+
+INSERT INTO customer_seat(
+            id, seat_id, bill_id, performance_id)
+    VALUES (2, 16, 1, 5);
+
+INSERT INTO customer_seat(
+            id, seat_id, bill_id, performance_id)
+    VALUES (3, 17, 1, 5);
+
+INSERT INTO customer_seat(
+            id, seat_id, bill_id, performance_id)
+    VALUES (4, 1, 1, 5);
+
+INSERT INTO customer_seat(
+            id, seat_id, bill_id, performance_id)
+    VALUES (5, 2, 2, 15);
+
+INSERT INTO customer_seat(
+            id, seat_id, bill_id, performance_id)
+    VALUES (6, 3, 2, 15);
+
+INSERT INTO customer_seat(
+            id, seat_id, bill_id, performance_id)
+    VALUES (7, 4, 2, 15);
+
+INSERT INTO customer_seat(
+            id, seat_id, bill_id, performance_id)
+    VALUES (8, 5, 3, 7);
+
+INSERT INTO customer_seat(
+            id, seat_id, bill_id, performance_id)
+    VALUES (9, 6, 3, 7);
+
+INSERT INTO customer_seat(
+            id, seat_id, bill_id, performance_id)
+    VALUES (10, 7, 4, 3);
+
+
+
+---cinema_movie insertions---
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (1, 2, 4,'2014-01-01' , '2014-05-06');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (4, 7, 6,'2014-03-03' , '2014-07-07');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (5, 8, 9, '2013-11-11', '2014-05-05');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (2, 3, 3, '2014-01-01', '2014-05-06');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (3, 4, 1, '2013-12-12','2014-05-05' );
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (6, 11, 10, '2014-01-01', '2014-06-06');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (7, 13, 2, '2013-12-12', '2014-07-07');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (8, 15, 5, '2014-02-03', '2014-08-08');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (9, 16, 7, '2014-03-02', '2014-09-09');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (10, 1, 8, '2014-01-01', '2014-09-08');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (11, 5, 1, '2013-01-01','2013-12-12');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (12, 6, 10,'2013-11-11','2014-01-01');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (13, 9, 5,'2013-12-12','2014-02-03');
+
+
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (15, 12, 7,'2013-10-10','2014-03-02');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (16, 14, 3, '2013-09-09','2014-01-01');
+
+INSERT INTO cinema_movie(
+            id, movie_id, cinema_id, from_date, to_date)
+    VALUES (17, 17, 6,'2014-01-01','2014-03-03');
